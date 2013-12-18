@@ -1,0 +1,30 @@
+必须使用sudo权限
+nbs@114-113-199-19:/home/hzsunzixiang/program/raw_socket/raw$ sudo gdb ./receive
+GNU gdb (GDB) 7.4.1-debian
+Copyright (C) 2012 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law. Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Reading symbols from /home/hzsunzixiang/program/raw_socket/raw/receive...done.
+(gdb) start
+Temporary breakpoint 1 at 0x400724: file receive.c, line 17.
+Starting program: /home/hzsunzixiang/program/raw_socket/raw/receive
+
+Temporary breakpoint 1, main () at receive.c:17
+17 if ((s = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)) < 0) {
+(gdb) n
+22 memset(packet, 0, sizeof(packet));
+(gdb)
+
+nbs@114-113-199-19:/home/hzsunzixiang/program$ sudo netstat -w
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address Foreign Address State
+nbs@114-113-199-19:/home/hzsunzixiang/program$ sudo netstat -wa
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address Foreign Address State
+raw 0 0 *:255 *:* 7
+
