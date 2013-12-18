@@ -27,4 +27,143 @@ nbs@114-113-199-19:/home/hzsunzixiang/program$ sudo netstat -wa
 Active Internet connections (servers and established)
 Proto Recv-Q Send-Q Local Address Foreign Address State
 raw 0 0 *:255 *:* 7
+http://sock-raw.org/papers/sock_raw
+
+ netstat {--statistics|-s} [--tcp|-t] [--udp|-u] [--raw|-w]
+
+
+
+hzsunzixiang@114-113-199-19:~/program/raw_socket/raw$ cat send.c
+/*** IPPROTO_RAW sender ***/
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/ip.h>
+#include <arpa/inet.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#define DEST "127.0.0.1"
+int main(void)
+{
+                int s;
+                struct sockaddr_in daddr;
+                char packet[50];
+                /* point the iphdr to the beginning of the packet */
+                struct iphdr *ip = (struct iphdr *)packet;
+                if ((s = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)) < 0) {
+                                perror("error:");
+                                exit(EXIT_FAILURE);
+                }
+                daddr.sin_family = AF_INET;
+        //daddr.sin_port = 0; /* not needed in SOCK_RAW */
+                daddr.sin_port = 9999; /* not needed in SOCK_RAW */
+                inet_pton(AF_INET, DEST, (struct in_addr *)&daddr.sin_addr.s_addr);
+                memset(daddr.sin_zero, 0, sizeof(daddr.sin_zero));
+                memset(packet, 'A', sizeof(packet)); /* payload will be all As */
+                ip->ihl = 5;
+                ip->version = 4;
+                ip->tos = 0;
+                ip->tot_len = htons(10); /* 16 byte value */
+                ip->frag_off = 0; /* no fragment */
+                ip->ttl = 64; /* default value */
+                ip->protocol = IPPROTO_RAW; /* protocol at L4 */
+                ip->check = 0; /* not needed in iphdr */
+                ip->saddr = daddr.sin_addr.s_addr;
+                ip->daddr = daddr.sin_addr.s_addr;
+                while(1) {
+                                sleep(1);
+                                if (sendto(s, (char *)packet, sizeof(packet), 0,
+                                                                                (struct sockaddr *)&daddr, (socklen_t)sizeof(daddr)) < 0)
+                                                perror("packet send error:");
+                }
+                exit(EXIT_SUCCESS);
+}
+hzsunzixiang@114-113-199-19:~/program/raw_socket/raw$ cat receive.c
+/*** IPPROTO_RAW receiver ***/
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/ip.h>
+#include <arpa/inet.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+int main(void)
+{
+                int s;
+                struct sockaddr_in saddr;
+                char packet[50];
+                if ((s = socket(AF_INET, SOCK_RAW, IPPROTO_RAW)) < 0) {
+                                perror("error:");
+                                exit(EXIT_FAILURE);
+                }
+                memset(packet, 0, sizeof(packet));
+                socklen_t *len = (socklen_t *)sizeof(saddr);
+                int fromlen = sizeof(saddr);
+                while(1) {
+                                if (recvfrom(s, (char *)&packet, sizeof(packet), 0,
+                                                                                (struct sockaddr *)&saddr, &fromlen) < 0)
+                                                perror("packet receive error:");
+                                int i = sizeof(struct iphdr); /* print the payload */
+                                while (i < sizeof(packet)) {
+                                                fprintf(stderr, "%c", packet[i]);
+                                                i++;
+                                }
+                                printf("\n");
+                }
+                exit(EXIT_SUCCESS);
+}
+
+
+
+原始套接口显示的是unix域？
+
+nbs@114-113-199-19:/home/hzsunzixiang/program/raw_socket/raw$ ps aux|grep send
+root     18700  0.0  0.0  36840  1756 pts/7    S+   18:50   0:00 sudo ./send
+root     18701  0.0  0.0   3932   316 pts/7    S+   18:50   0:00 ./send
+nbs      19557  0.0  0.0  10480   876 pts/4    R+   18:54   0:00 grep send
+nbs@114-113-199-19:/home/hzsunzixiang/program/raw_socket/raw$ sudo netstat -p|grep 18700
+unix  2      [ ]         DGRAM                    143037897 18700/sudo
+unix  2      [ ]         DGRAM                    143037894 18700/sudo
+
+128 Active UNIX domain sockets (w/o servers)
+129 Proto RefCnt Flags       Type       State         I-Node   PID/Program name    Path
+130 unix  20     [ ]         DGRAM                    10839    3683/rsyslogd       /dev/log
+131 unix  2      [ ]         DGRAM                    143023053 19330/sudo
+132 unix  2      [ ]         DGRAM                    143023050 19330/sudo
+133 unix  2      [ ]         DGRAM                    143037897 18700/sudo
+134 unix  2      [ ]         DGRAM                    143037894 18700/sudo
+
+
+ip总长度内核会重新计算的，即使赋值了一个错误的值，
+
+ ip->tot_len = htons(50);  
+
+
+
+nbs@114-113-199-19:/home/hzsunzixiang$ sudo tcpdump -c 1 -i lo -X -vv
+tcpdump: listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
+19:03:14.430469 IP (tos 0x0, ttl 64, id 16705, offset 0, flags [none], proto unknown (255), length 50)
+    localhost > localhost:  ip-proto-255 30
+        0x0000:  4500 0032 4141 0000 40ff 3a8a 7f00 0001  E..2AA..@.:.....
+        0x0010:  7f00 0001 4141 4141 4141 4141 4141 4141  ....AAAAAAAAAAAA
+        0x0020:  4141 4141 4141 4141 4141 4141 4141 4141  AAAAAAAAAAAAAAAA
+        0x0030:  4141                                     AA
+1 packet captured
+2 packets received by filter
+0 packets dropped by kernel
+
+
+ ip->tot_len = htons(10);  
+
+nbs@114-113-199-19:/home/hzsunzixiang$ sudo tcpdump -c 1 -i lo -X -vv
+tcpdump: listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
+^[[A19:06:41.079537 IP (tos 0x0, ttl 64, id 16705, offset 0, flags [none], proto unknown (255), length 50)
+    localhost > localhost:  ip-proto-255 30
+        0x0000:  4500 0032 4141 0000 40ff 3a8a 7f00 0001  E..2AA..@.:.....
+        0x0010:  7f00 0001 4141 4141 4141 4141 4141 4141  ....AAAAAAAAAAAA
+        0x0020:  4141 4141 4141 4141 4141 4141 4141 4141  AAAAAAAAAAAAAAAA
+        0x0030:  4141                                     AA
+1 packet captured
+2 packets received by filter
+0 packets dropped by kernel
 
