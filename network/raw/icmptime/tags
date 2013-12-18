@@ -1,0 +1,19 @@
+DEFDATALEN	icmptime1.c	28
+MAXICMPLEN	icmptime1.c	30
+MAXIPLEN	icmptime1.c	29
+MAXPACKET	icmptime1.c	31
+Micmptime1	icmptime1.c	/^main(argc, argv)$/
+datalen	icmptime1.c	34
+hostname	icmptime1.c	37
+in_cksum	icmptime1.c	/^in_cksum(addr, len)$/
+outpack	icmptime1.c	36
+procpack	icmptime1.c	/^procpack(buf, cc, from)$/
+s	icmptime1.c	35
+sender	icmptime1.c	/^sender()$/
+sig_alrm	icmptime1.c	/^sig_alrm(int signo)$/
+tsdiff	icmptime1.c	43
+tsorig	icmptime1.c	40
+tsrecv	icmptime1.c	40
+tvorig	icmptime1.c	39
+tvrecv	icmptime1.c	39
+whereto	icmptime1.c	33
