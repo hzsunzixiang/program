@@ -1,16 +1,9 @@
-待完成
-
-#XX = gcc
-#CXXFLAGS +=-g -Wall -Wextra
-#
-#
-#TARGETS = receive
-#TARGETS_C_FILE= $(TARGETS).c
-#
-#CLEANUP = "rm -f $(TARGETS) *.o"
-#
-#all:$(TARGETS)
-#
-#clean:
-#	$(CLEANUP)
-#
+.PHONY:clean all
+CC=gcc
+CFLAGS=-Wall -g
+BIN=receive send
+all:$(BIN)
+%.o:%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+clean:
+	rm -f *.o $(BIN)
