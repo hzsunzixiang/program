@@ -1,0 +1,1 @@
+cmd_/root/program/github/program/network/netlink/kernel/hello.ko := ld -r -m elf_x86_64 -T /usr/src/linux-headers-3.2.0-4-common/scripts/module-common.lds --build-id  -o /root/program/github/program/network/netlink/kernel/hello.ko /root/program/github/program/network/netlink/kernel/hello.o /root/program/github/program/network/netlink/kernel/hello.mod.o
