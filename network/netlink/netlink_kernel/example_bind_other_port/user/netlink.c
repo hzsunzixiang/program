@@ -31,6 +31,7 @@ int main()
 		memset(&src_addr, 0, sizeof(src_addr));
 		src_addr.nl_family = AF_NETLINK;
 		//src_addr.nl_pid = getpid(); /* self pid */
+		// 这个是在协议字段中，内核返回的时候要以这个pid为准
 		src_addr.nl_pid = 10000;/* self pid */
 
 		bind(sock_fd, (struct sockaddr *)&src_addr, sizeof(src_addr));
@@ -44,7 +45,9 @@ int main()
 		nlh = (struct nlmsghdr *)malloc(NLMSG_SPACE(MAX_PAYLOAD));
 		memset(nlh, 0, NLMSG_SPACE(MAX_PAYLOAD));
 		nlh->nlmsg_len = NLMSG_SPACE(MAX_PAYLOAD);
-		nlh->nlmsg_pid = getpid();
+		//nlh->nlmsg_pid = getpid();
+		// 内核可以获得这个pid，但是发送的时候是一个src_addr中的pid为准的
+		nlh->nlmsg_pid = 30000;  // 这个内核可以在头部字段获取
 		nlh->nlmsg_flags = 0;
 
 		strcpy(NLMSG_DATA(nlh), "Hello");
