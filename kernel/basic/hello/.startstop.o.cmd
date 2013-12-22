@@ -1,0 +1,1 @@
+cmd_/root/program/github/program/kernel/basic/hello-2/startstop.o := ld -m elf_x86_64   -r -o /root/program/github/program/kernel/basic/hello-2/startstop.o /root/program/github/program/kernel/basic/hello-2/start.o /root/program/github/program/kernel/basic/hello-2/stop.o 
