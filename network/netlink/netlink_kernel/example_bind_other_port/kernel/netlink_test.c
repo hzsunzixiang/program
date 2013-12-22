@@ -39,8 +39,8 @@ static void hello_nl_recv_msg(struct sk_buff *skb)
 		NETLINK_CB(skb_out).dst_group = 0; /* not in mcast group */
 		strncpy(nlmsg_data(nlh), msg, msg_size);
 
-		//res = nlmsg_unicast(nl_sk, skb_out, pid);
-		res = nlmsg_unicast(nl_sk, skb_out, 10000);
+		res = nlmsg_unicast(nl_sk, skb_out, pid);
+		//res = nlmsg_unicast(nl_sk, skb_out, 10000);
 
 		if (res < 0)
 				printk(KERN_INFO "Error while sending bak to user\n");

@@ -47,7 +47,11 @@ int main()
 		nlh->nlmsg_len = NLMSG_SPACE(MAX_PAYLOAD);
 		//nlh->nlmsg_pid = getpid();
 		// 内核可以获得这个pid，但是发送的时候是一个src_addr中的pid为准的
-		nlh->nlmsg_pid = 30000;  // 这个内核可以在头部字段获取
+
+
+		// 内核 可以获取这个pid号，发送的时候如果src_addr端口和这个不一样，就发送不了
+		// 内核返回数据的时候必须和src_addr指定的pid一致
+		nlh->nlmsg_pid = 10000;  // 这个内核可以在头部字段获取
 		nlh->nlmsg_flags = 0;
 
 		strcpy(NLMSG_DATA(nlh), "Hello");
