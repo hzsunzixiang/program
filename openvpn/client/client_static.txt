@@ -1,0 +1,11 @@
+# OpenVPN server
+remote 10.160.30.75
+# Tunnel mode
+dev tun
+# IP addresses
+ifconfig 10.9.0.2 10.9.0.1
+# shared key
+secret  /root/openvpn/key.txt
+# Log verbosity
+verb 2
+
