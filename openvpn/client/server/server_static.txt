@@ -1,0 +1,8 @@
+# Tunnel mode
+dev tun
+# Ip addresses
+ifconfig 10.9.0.1 10.9.0.2
+# shared key
+secret /root/openvpn/key.txt
+# Log verbosity
+verb 2

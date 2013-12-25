@@ -1,0 +1,19 @@
+# TLS mode - client
+tls-client
+# OpenVPN server
+remote 10.160.30.75
+# Tunnel mode
+dev tun
+# CLIENT ACCEPTS SERVER OPTIONS
+# The client should accept options pushed
+# by the server
+pull
+# CA certificate
+ca /root/openvpn/key/2.0/keys/ca.crt
+# client certificate
+cert /root/openvpn/key/2.0/keys/client.crt
+# client private key
+key /root/openvpn/key/2.0/keys/client.key
+# Log verbosity
+verb 2
+#openvpn --remote june.kg --dev tun1 --ifconfig 10.4.0.1 10.4.0.2 --tls-client --ca tmp-ca.crt --cert client.crt --key client.key --reneg-sec 60 --verb 5

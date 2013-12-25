@@ -1,0 +1,73 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 2 (0x2)
+    Signature Algorithm: sha1WithRSAEncryption
+        Issuer: C=US, ST=CA, L=SanFrancisco, O=Fort-Funston, OU=changeme, CN=server/name=changeme/emailAddress=mail@host.domain
+        Validity
+            Not Before: Dec 25 09:03:05 2013 GMT
+            Not After : Dec 23 09:03:05 2023 GMT
+        Subject: C=US, ST=CA, L=SanFrancisco, O=Fort-Funston, OU=changeme, CN=client/name=changeme/emailAddress=mail@host.domain
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (1024 bit)
+                Modulus:
+                    00:c6:d9:18:2e:04:55:65:13:8b:37:5c:3b:06:8f:
+                    c6:15:65:3c:62:5c:16:2a:33:c8:12:f5:76:de:2d:
+                    dd:99:9c:e0:0b:d9:73:15:57:2e:b5:83:30:3f:c5:
+                    44:88:52:f4:95:9d:af:16:3b:51:0f:ff:ec:d7:a0:
+                    57:53:d7:65:95:63:ca:41:43:8e:6a:76:b6:a0:2c:
+                    e6:43:c0:3f:32:76:be:cc:0a:87:74:86:6d:6d:b8:
+                    b2:25:da:4f:b7:7e:b0:78:d0:41:11:ed:6b:ff:80:
+                    63:74:6f:ed:03:a3:11:31:2b:08:1d:41:8d:7c:04:
+                    30:db:60:01:55:5a:de:5a:55
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                D5:15:EF:BC:29:6A:7B:97:DB:31:9E:1A:BC:D1:B6:BD:7B:90:43:11
+            X509v3 Authority Key Identifier: 
+                keyid:EE:17:C7:13:B7:A7:CF:38:87:91:33:9F:F4:C6:EC:37:11:A7:F2:92
+                DirName:/C=US/ST=CA/L=SanFrancisco/O=Fort-Funston/OU=changeme/CN=server/name=changeme/emailAddress=mail@host.domain
+                serial:AE:8C:0C:4A:8C:21:AE:8F
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha1WithRSAEncryption
+         c9:cd:a2:ba:98:8b:0b:4f:db:cc:1b:e0:d2:7c:c1:6a:48:e9:
+         eb:d3:2e:fb:ee:fa:99:bf:9b:b0:09:36:74:95:8f:be:49:4a:
+         74:9a:3e:8f:4b:86:d3:8e:8d:e2:35:05:93:80:c8:7b:d2:2e:
+         1a:0d:93:af:34:4f:0a:a8:4d:dd:d2:d2:c3:c1:2f:cd:14:29:
+         84:d5:93:61:b9:cf:49:d7:61:c9:8c:24:b6:47:1d:39:7c:31:
+         c0:d4:3a:8c:ad:19:43:5d:7e:84:61:3c:40:bd:97:c9:4f:37:
+         cb:9b:a9:35:15:c7:59:d4:26:87:3c:83:a1:ed:89:e3:9c:05:
+         63:ee
+-----BEGIN CERTIFICATE-----
+MIIEETCCA3qgAwIBAgIBAjANBgkqhkiG9w0BAQUFADCBoDELMAkGA1UEBhMCVVMx
+CzAJBgNVBAgTAkNBMRUwEwYDVQQHEwxTYW5GcmFuY2lzY28xFTATBgNVBAoTDEZv
+cnQtRnVuc3RvbjERMA8GA1UECxMIY2hhbmdlbWUxDzANBgNVBAMTBnNlcnZlcjER
+MA8GA1UEKRMIY2hhbmdlbWUxHzAdBgkqhkiG9w0BCQEWEG1haWxAaG9zdC5kb21h
+aW4wHhcNMTMxMjI1MDkwMzA1WhcNMjMxMjIzMDkwMzA1WjCBoDELMAkGA1UEBhMC
+VVMxCzAJBgNVBAgTAkNBMRUwEwYDVQQHEwxTYW5GcmFuY2lzY28xFTATBgNVBAoT
+DEZvcnQtRnVuc3RvbjERMA8GA1UECxMIY2hhbmdlbWUxDzANBgNVBAMTBmNsaWVu
+dDERMA8GA1UEKRMIY2hhbmdlbWUxHzAdBgkqhkiG9w0BCQEWEG1haWxAaG9zdC5k
+b21haW4wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMbZGC4EVWUTizdcOwaP
+xhVlPGJcFiozyBL1dt4t3Zmc4AvZcxVXLrWDMD/FRIhS9JWdrxY7UQ//7NegV1PX
+ZZVjykFDjmp2tqAs5kPAPzJ2vswKh3SGbW24siXaT7d+sHjQQRHta/+AY3Rv7QOj
+ETErCB1BjXwEMNtgAVVa3lpVAgMBAAGjggFXMIIBUzAJBgNVHRMEAjAAMC0GCWCG
+SAGG+EIBDQQgFh5FYXN5LVJTQSBHZW5lcmF0ZWQgQ2VydGlmaWNhdGUwHQYDVR0O
+BBYEFNUV77wpanuX2zGeGrzRtr17kEMRMIHVBgNVHSMEgc0wgcqAFO4XxxO3p884
+h5Ezn/TG7DcRp/KSoYGmpIGjMIGgMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0Ex
+FTATBgNVBAcTDFNhbkZyYW5jaXNjbzEVMBMGA1UEChMMRm9ydC1GdW5zdG9uMREw
+DwYDVQQLEwhjaGFuZ2VtZTEPMA0GA1UEAxMGc2VydmVyMREwDwYDVQQpEwhjaGFu
+Z2VtZTEfMB0GCSqGSIb3DQEJARYQbWFpbEBob3N0LmRvbWFpboIJAK6MDEqMIa6P
+MBMGA1UdJQQMMAoGCCsGAQUFBwMCMAsGA1UdDwQEAwIHgDANBgkqhkiG9w0BAQUF
+AAOBgQDJzaK6mIsLT9vMG+DSfMFqSOnr0y777vqZv5uwCTZ0lY++SUp0mj6PS4bT
+jo3iNQWTgMh70i4aDZOvNE8KqE3d0tLDwS/NFCmE1ZNhuc9J12HJjCS2Rx05fDHA
+1DqMrRlDXX6EYTxAvZfJTzfLm6k1FcdZ1CaHPIOh7YnjnAVj7g==
+-----END CERTIFICATE-----

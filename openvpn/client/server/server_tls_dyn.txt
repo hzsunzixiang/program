@@ -1,0 +1,20 @@
+# TLS mode - server
+tls-server
+# Tunnel mode
+dev tun
+# DHCP SETTINGS
+# DHCP range
+# Server will take the first IP address
+server 10.9.0.0 255.255.255.0
+# CA certificate
+ca /root/openvpn/key/2.0/keys/ca.crt
+# server certificate
+cert /root/openvpn/key/2.0/keys/server.crt
+#  server private key
+key /root/openvpn/key/2.0/keys/server.key
+# Diffie-Hellman Settings
+dh /root/openvpn/key/2.0/keys/dh1024.pem
+# Log verbosity
+verb 2
+
+#openvpn --remote may.kg --dev tun1 --ifconfig 10.4.0.2 10.4.0.1 --tls-server --dh dh1024.pem --ca tmp-ca.crt --cert server.crt --key server.key --reneg-sec 60 --verb 5 
