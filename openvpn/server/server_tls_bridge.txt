@@ -1,0 +1,28 @@
+# TLS mode - server
+# Server mode
+tls-server
+# Bridge mode
+dev tap0
+# IP settings, server takes  192.168.2.1
+server 192.168.2.0 255.255.255.0
+# Local port
+lport 2000
+# CA certificate
+ca /root/openvpn/key/2.0/keys/ca.crt
+# server certificate
+cert /root/openvpn/key/2.0/keys/server.crt
+#  server private key
+key /root/openvpn/key/2.0/keys/server.key
+# Diffie-Hellman Settings
+dh /root/openvpn/key/2.0/keys/dh1024.pem
+# Log verbosity
+verb 2
+
+
+
+
+# Authorises client to client connectivity
+client-to-client
+# clients IP address reservations
+#ifconfig-pool-persist ipp.txt
+#openvpn --remote may.kg --dev tun1 --ifconfig 10.4.0.2 10.4.0.1 --tls-server --dh dh1024.pem --ca tmp-ca.crt --cert server.crt --key server.key --reneg-sec 60 --verb 5 
