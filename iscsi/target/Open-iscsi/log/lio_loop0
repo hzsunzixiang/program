@@ -1,0 +1,28 @@
+
+iqn=com.netease1`date '+%s'`
+blockName=block_`date '+%s'`
+lun=lun_`date '+%s'`
+echo $iqn $blockName    $lun >info
+tcm_node --block iblock_0/$blockName /dev/loop0
+lio_node --addlun $iqn 1 0 $lun  iblock_0/$blockName
+lio_node --listendpoints
+lio_node --addnp $iqn 1  0.0.0.0:3260
+lio_node --enabletpg $iqn 1
+lio_node --demomode $iqn 1
+lio_node --disableauth $iqn 1
+lio_node --settpgattr=$iqn  1 demo_mode_write_protect 0
+iscsiadm -m session -P3
+iscsiadm -m discovery -t sendtargets -p 192.168.146.26:3260
+#sleep 10
+#iscsiadm -m node -T $iqn -p  192.168.146.26:3260 --login
+
+#sleep 60
+#iscsiadm -m node -T $iqn -p  192.168.146.26:3260 --logout
+#lio_node --deltpg  $iqn 1
+#tcm_node --freedev iblock_0/$blockName
+#lio_node --deliqn  $iqn
+
+
+
+
+

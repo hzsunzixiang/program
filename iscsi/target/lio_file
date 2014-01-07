@@ -1,0 +1,14 @@
+
+#lun=com.netease_file`date '+%s'`
+lun=my_file0
+file=test_`date '+%s'`
+tcm_node --fileio fileio_0/my_file0 /home/nbs/program/dmsetup/file.img  20480
+lio_node --addlun $file 1 0 lun_my_file fileio_0/my_file0
+lio_node --listendpoints
+lio_node --addnp $lun 1  0.0.0.0:3260
+lio_node --enabletpg $lun 1
+lio_node --demomode $lun 1
+lio_node --disableauth $lun 1
+iscsiadm -m node -T $lun -p  192.168.146.26:3260 --login
+iscsiadm -m session -P3
+

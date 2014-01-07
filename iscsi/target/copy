@@ -1,0 +1,4 @@
+iqn=com.netease1`date '+%s'`
+blockName=block_`date '+%s'`
+lun=lun_`date '+%s'`
+echo $iqn $block    $lun >info

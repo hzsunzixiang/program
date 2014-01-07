@@ -1,0 +1,50 @@
+Target: test:123456:loop3
+	Current Portal: 192.168.146.233:3260,1
+	Persistent Portal: 192.168.146.233:3260,1
+		**********
+		Interface:
+		**********
+		Iface Name: default
+		Iface Transport: tcp
+		Iface Initiatorname: iqn.1993-08.org.debian:01:fcc9228c36cc
+		Iface IPaddress: 192.168.146.233
+		Iface HWaddress: <empty>
+		Iface Netdev: <empty>
+		SID: 13
+		iSCSI Connection State: LOGGED IN
+		iSCSI Session State: LOGGED_IN
+		Internal iscsid Session State: NO CHANGE
+		*********
+		Timeouts:
+		*********
+		Recovery Timeout: 120
+		Target Reset Timeout: 30
+		LUN Reset Timeout: 30
+		Abort Timeout: 15
+		*****
+		CHAP:
+		*****
+		username: <empty>
+		password: ********
+		username_in: <empty>
+		password_in: ********
+		************************
+		Negotiated iSCSI params:
+		************************
+		HeaderDigest: None
+		DataDigest: None
+		MaxRecvDataSegmentLength: 262144
+		MaxXmitDataSegmentLength: 8192
+		FirstBurstLength: 65536
+		MaxBurstLength: 262144
+		ImmediateData: Yes
+		InitialR2T: Yes
+		MaxOutstandingR2T: 1
+		************************
+		Attached SCSI devices:
+		************************
+		Host Number: 60	State: running
+		scsi60 Channel 00 Id 0 Lun: 0
+			Attached scsi disk sdd		State: running
+		scsi60 Channel 00 Id 0 Lun: 1
+			Attached scsi disk sde		State: running

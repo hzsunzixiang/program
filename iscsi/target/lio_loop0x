@@ -1,0 +1,12 @@
+
+lun=com.netease1`date '+%s'`
+tcm_node --block iblock_0/test_lv1  /dev/loop0
+lio_node --addlun com.netease1`date '+%s'` 1 0 lun_my_lv iblock_0/test_lv1
+lio_node --listendpoints
+lio_node --addnp com.netease1 1  0.0.0.0:3260
+lio_node --enabletpg com.netease1 1
+lio_node --demomode com.netease1 1
+lio_node --disableauth com.netease1 1
+iscsiadm -m node -T com.netease1 -p  192.168.146.26:3260 --login
+iscsiadm -m session -P3
+
