@@ -1,0 +1,30 @@
+dmsetup
+vi /etc/iet/iet.conf
+vi /etc/iscsi/iscsid.conf
+cd /etc/target/
+ls -l
+cat lio_start.sh
+cat tcm_start.sh
+ls -l
+linear
+ls -l /dev/loop0
+losetup -a
+cd /data
+ls
+losetup /dev/loop0 loop0.dat
+ls -l /dev/loop0
+blockdev --getsize /dev/loop0
+echo -e "0 204800 linear /dev/loop0 0" | dmsetup create test01 
+ls -l /dev/mapper
+blockdev --getsize /dev/mapper/test01
+ls
+dd if=/etc/passwd of=/dev/mapper/test01 bs=1024k 
+dd  if=/dev/loop0 bs=8k count=1
+dmsetup remove test01 
+ls -l
+dmsetup table
+pvs
+lvs
+ls -l /dev/ |grep 8
+pvs
+dmsetup table
