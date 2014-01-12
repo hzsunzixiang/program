@@ -18,6 +18,7 @@ extern ngx_module_t  ngx_http_log_module;
 extern ngx_module_t  ngx_http_upstream_module;
 extern ngx_module_t  ngx_http_static_module;
 extern ngx_module_t  ngx_http_index_module;
+extern ngx_module_t  ngx_http_hello_world_module;
 extern ngx_module_t  ngx_http_write_filter_module;
 extern ngx_module_t  ngx_http_header_filter_module;
 extern ngx_module_t  ngx_http_chunked_filter_module;
@@ -42,6 +43,7 @@ ngx_module_t *ngx_modules[] = {
     &ngx_http_upstream_module,
     &ngx_http_static_module,
     &ngx_http_index_module,
+    &ngx_http_hello_world_module,
     &ngx_http_write_filter_module,
     &ngx_http_header_filter_module,
     &ngx_http_chunked_filter_module,

@@ -1,4 +1,4 @@
-#define NGX_CONFIGURE " --prefix=./object --with-select_module --with-poll_module --without-http_charset_module --without-http_gzip_module --without-http_ssi_module --without-http_userid_module --without-http_access_module --without-http_auth_basic_module --without-http_autoindex_module --without-http_geo_module --without-http_map_module --without-http_split_clients_module --without-http_referer_module --without-http_rewrite_module --without-http_proxy_module --without-http_fastcgi_module --without-http_uwsgi_module --without-http_scgi_module --without-http_memcached_module --without-http_limit_conn_module --without-http_limit_req_module --without-http_empty_gif_module --without-http_browser_module --without-http_upstream_ip_hash_module --without-http_upstream_least_conn_module --without-http_upstream_keepalive_module --http-log-path=./object/access_log --http-client-body-temp-path=./object/client_request --without-http-cache --without-mail_pop3_module --without-mail_imap_module --without-mail_smtp_module --without-pcre --with-debug"
+#define NGX_CONFIGURE " --prefix=./object_helloworld --with-select_module --with-poll_module --without-http_charset_module --without-http_gzip_module --without-http_ssi_module --without-http_userid_module --without-http_access_module --without-http_auth_basic_module --without-http_autoindex_module --without-http_geo_module --without-http_map_module --without-http_split_clients_module --without-http_referer_module --without-http_rewrite_module --without-http_proxy_module --without-http_fastcgi_module --without-http_uwsgi_module --without-http_scgi_module --without-http_memcached_module --without-http_limit_conn_module --without-http_limit_req_module --without-http_empty_gif_module --without-http_browser_module --without-http_upstream_ip_hash_module --without-http_upstream_least_conn_module --without-http_upstream_keepalive_module --http-log-path=./object_helloworld/access_log --http-client-body-temp-path=./object_helloworld/client_request --without-http-cache --without-mail_pop3_module --without-mail_imap_module --without-mail_smtp_module --without-pcre --with-debug --add-module=./src/ngx_http_hello_world_module"
 
 #ifndef NGX_DEBUG
 #define NGX_DEBUG  1
@@ -269,7 +269,7 @@
 
 
 #ifndef NGX_PREFIX
-#define NGX_PREFIX  "./object/"
+#define NGX_PREFIX  "./object_helloworld/"
 #endif
 
 
@@ -304,12 +304,12 @@
 
 
 #ifndef NGX_HTTP_LOG_PATH
-#define NGX_HTTP_LOG_PATH  "./object/access_log"
+#define NGX_HTTP_LOG_PATH  "./object_helloworld/access_log"
 #endif
 
 
 #ifndef NGX_HTTP_CLIENT_TEMP_PATH
-#define NGX_HTTP_CLIENT_TEMP_PATH  "./object/client_request"
+#define NGX_HTTP_CLIENT_TEMP_PATH  "./object_helloworld/client_request"
 #endif
 
 
