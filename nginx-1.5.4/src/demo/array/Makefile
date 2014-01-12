@@ -7,7 +7,7 @@ CXXFLAGS +=-g -Wall -Wextra
 TARGETS =nginx_array_t_test
 TARGETS_C_FILE= $(TARGETS).c
  
-CLEANUP = "rm -f $(TARGETS) *.o"
+CLEANUP="rm -f $(TARGETS) *.o"
  
 all:$(TARGETS)
  
