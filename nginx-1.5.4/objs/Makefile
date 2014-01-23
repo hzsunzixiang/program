@@ -180,7 +180,7 @@ objs/nginx:	objs/src/core/nginx.o \
 	objs/src/http/modules/ngx_http_headers_filter_module.o \
 	objs/src/http/modules/ngx_http_not_modified_filter_module.o \
 	objs/src/http/ngx_http_busy_lock.o \
-	objs/addon/ngx_http_hello_world_module/ngx_http_hello_world_module.o \
+	objs/addon/echo-nginx-module/ngx_http_echo_module.o \
 	objs/ngx_modules.o
 
 	$(LINK) -o objs/nginx \
@@ -266,7 +266,7 @@ objs/nginx:	objs/src/core/nginx.o \
 	objs/src/http/modules/ngx_http_headers_filter_module.o \
 	objs/src/http/modules/ngx_http_not_modified_filter_module.o \
 	objs/src/http/ngx_http_busy_lock.o \
-	objs/addon/ngx_http_hello_world_module/ngx_http_hello_world_module.o \
+	objs/addon/echo-nginx-module/ngx_http_echo_module.o \
 	objs/ngx_modules.o \
 	-lpthread
 	
@@ -853,57 +853,57 @@ objs/src/http/ngx_http_busy_lock.o:	$(CORE_DEPS) $(HTTP_DEPS) \
 		src/http/ngx_http_busy_lock.c
 
 
-objs/addon/ngx_http_hello_world_module/ngx_http_hello_world_module.o:	$(ADDON_DEPS) \
-	./src/ngx_http_hello_world_module/ngx_http_hello_world_module.c
+objs/addon/echo-nginx-module/ngx_http_echo_module.o:	$(ADDON_DEPS) \
+	./echo-nginx-module/ngx_http_echo_module.c
 	$(CC) -c $(CFLAGS)  $(ALL_INCS) \
-		-o objs/addon/ngx_http_hello_world_module/ngx_http_hello_world_module.o \
-		./src/ngx_http_hello_world_module/ngx_http_hello_world_module.c
+		-o objs/addon/echo-nginx-module/ngx_http_echo_module.o \
+		./echo-nginx-module/ngx_http_echo_module.c
 
 
 manpage:	objs/nginx.8
 
 objs/nginx.8:	man/nginx.8 objs/ngx_auto_config.h
-	sed -e "s|%%PREFIX%%|./object_helloworld|" \
-		-e "s|%%PID_PATH%%|./object_helloworld/logs/nginx.pid|" \
-		-e "s|%%CONF_PATH%%|./object_helloworld/conf/nginx.conf|" \
-		-e "s|%%ERROR_LOG_PATH%%|./object_helloworld/logs/error.log|" \
+	sed -e "s|%%PREFIX%%|./object_echo-nginx-module|" \
+		-e "s|%%PID_PATH%%|./object_echo-nginx-module/logs/nginx.pid|" \
+		-e "s|%%CONF_PATH%%|./object_echo-nginx-module/conf/nginx.conf|" \
+		-e "s|%%ERROR_LOG_PATH%%|./object_echo-nginx-module/logs/error.log|" \
 		< man/nginx.8 > $@
 
 install:	objs/nginx 		
-	test -d '$(DESTDIR)./object_helloworld' || mkdir -p '$(DESTDIR)./object_helloworld'
+	test -d '$(DESTDIR)./object_echo-nginx-module' || mkdir -p '$(DESTDIR)./object_echo-nginx-module'
 
-	test -d '$(DESTDIR)./object_helloworld/sbin' 		|| mkdir -p '$(DESTDIR)./object_helloworld/sbin'
-	test ! -f '$(DESTDIR)./object_helloworld/sbin/nginx' 		|| mv '$(DESTDIR)./object_helloworld/sbin/nginx' 			'$(DESTDIR)./object_helloworld/sbin/nginx.old'
-	cp objs/nginx '$(DESTDIR)./object_helloworld/sbin/nginx'
+	test -d '$(DESTDIR)./object_echo-nginx-module/sbin' 		|| mkdir -p '$(DESTDIR)./object_echo-nginx-module/sbin'
+	test ! -f '$(DESTDIR)./object_echo-nginx-module/sbin/nginx' 		|| mv '$(DESTDIR)./object_echo-nginx-module/sbin/nginx' 			'$(DESTDIR)./object_echo-nginx-module/sbin/nginx.old'
+	cp objs/nginx '$(DESTDIR)./object_echo-nginx-module/sbin/nginx'
 
-	test -d '$(DESTDIR)./object_helloworld/conf' 		|| mkdir -p '$(DESTDIR)./object_helloworld/conf'
+	test -d '$(DESTDIR)./object_echo-nginx-module/conf' 		|| mkdir -p '$(DESTDIR)./object_echo-nginx-module/conf'
 
-	cp conf/koi-win '$(DESTDIR)./object_helloworld/conf'
-	cp conf/koi-utf '$(DESTDIR)./object_helloworld/conf'
-	cp conf/win-utf '$(DESTDIR)./object_helloworld/conf'
+	cp conf/koi-win '$(DESTDIR)./object_echo-nginx-module/conf'
+	cp conf/koi-utf '$(DESTDIR)./object_echo-nginx-module/conf'
+	cp conf/win-utf '$(DESTDIR)./object_echo-nginx-module/conf'
 
-	test -f '$(DESTDIR)./object_helloworld/conf/mime.types' 		|| cp conf/mime.types '$(DESTDIR)./object_helloworld/conf'
-	cp conf/mime.types '$(DESTDIR)./object_helloworld/conf/mime.types.default'
+	test -f '$(DESTDIR)./object_echo-nginx-module/conf/mime.types' 		|| cp conf/mime.types '$(DESTDIR)./object_echo-nginx-module/conf'
+	cp conf/mime.types '$(DESTDIR)./object_echo-nginx-module/conf/mime.types.default'
 
-	test -f '$(DESTDIR)./object_helloworld/conf/fastcgi_params' 		|| cp conf/fastcgi_params '$(DESTDIR)./object_helloworld/conf'
-	cp conf/fastcgi_params 		'$(DESTDIR)./object_helloworld/conf/fastcgi_params.default'
+	test -f '$(DESTDIR)./object_echo-nginx-module/conf/fastcgi_params' 		|| cp conf/fastcgi_params '$(DESTDIR)./object_echo-nginx-module/conf'
+	cp conf/fastcgi_params 		'$(DESTDIR)./object_echo-nginx-module/conf/fastcgi_params.default'
 
-	test -f '$(DESTDIR)./object_helloworld/conf/fastcgi.conf' 		|| cp conf/fastcgi.conf '$(DESTDIR)./object_helloworld/conf'
-	cp conf/fastcgi.conf '$(DESTDIR)./object_helloworld/conf/fastcgi.conf.default'
+	test -f '$(DESTDIR)./object_echo-nginx-module/conf/fastcgi.conf' 		|| cp conf/fastcgi.conf '$(DESTDIR)./object_echo-nginx-module/conf'
+	cp conf/fastcgi.conf '$(DESTDIR)./object_echo-nginx-module/conf/fastcgi.conf.default'
 
-	test -f '$(DESTDIR)./object_helloworld/conf/uwsgi_params' 		|| cp conf/uwsgi_params '$(DESTDIR)./object_helloworld/conf'
-	cp conf/uwsgi_params 		'$(DESTDIR)./object_helloworld/conf/uwsgi_params.default'
+	test -f '$(DESTDIR)./object_echo-nginx-module/conf/uwsgi_params' 		|| cp conf/uwsgi_params '$(DESTDIR)./object_echo-nginx-module/conf'
+	cp conf/uwsgi_params 		'$(DESTDIR)./object_echo-nginx-module/conf/uwsgi_params.default'
 
-	test -f '$(DESTDIR)./object_helloworld/conf/scgi_params' 		|| cp conf/scgi_params '$(DESTDIR)./object_helloworld/conf'
-	cp conf/scgi_params 		'$(DESTDIR)./object_helloworld/conf/scgi_params.default'
+	test -f '$(DESTDIR)./object_echo-nginx-module/conf/scgi_params' 		|| cp conf/scgi_params '$(DESTDIR)./object_echo-nginx-module/conf'
+	cp conf/scgi_params 		'$(DESTDIR)./object_echo-nginx-module/conf/scgi_params.default'
 
-	test -f '$(DESTDIR)./object_helloworld/conf/nginx.conf' 		|| cp conf/nginx.conf '$(DESTDIR)./object_helloworld/conf/nginx.conf'
-	cp conf/nginx.conf '$(DESTDIR)./object_helloworld/conf/nginx.conf.default'
+	test -f '$(DESTDIR)./object_echo-nginx-module/conf/nginx.conf' 		|| cp conf/nginx.conf '$(DESTDIR)./object_echo-nginx-module/conf/nginx.conf'
+	cp conf/nginx.conf '$(DESTDIR)./object_echo-nginx-module/conf/nginx.conf.default'
 
-	test -d '$(DESTDIR)./object_helloworld/logs' 		|| mkdir -p '$(DESTDIR)./object_helloworld/logs'
+	test -d '$(DESTDIR)./object_echo-nginx-module/logs' 		|| mkdir -p '$(DESTDIR)./object_echo-nginx-module/logs'
 
-	test -d '$(DESTDIR)./object_helloworld/./object_helloworld' || 		mkdir -p '$(DESTDIR)./object_helloworld/./object_helloworld'
+	test -d '$(DESTDIR)./object_echo-nginx-module/./object_echo-nginx-module' || 		mkdir -p '$(DESTDIR)./object_echo-nginx-module/./object_echo-nginx-module'
 
-	test -d '$(DESTDIR)./object_helloworld/html' 		|| cp -R html '$(DESTDIR)./object_helloworld'
+	test -d '$(DESTDIR)./object_echo-nginx-module/html' 		|| cp -R html '$(DESTDIR)./object_echo-nginx-module'
 
-	test -d '$(DESTDIR)./object_helloworld/logs' || 		mkdir -p '$(DESTDIR)./object_helloworld/logs'
+	test -d '$(DESTDIR)./object_echo-nginx-module/logs' || 		mkdir -p '$(DESTDIR)./object_echo-nginx-module/logs'
