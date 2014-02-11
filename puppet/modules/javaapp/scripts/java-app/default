@@ -1,0 +1,24 @@
+#java app default config
+NETEASE_SPACE=/home/nbs
+
+#set JAVA_HOME path
+JAVA_HOME=/usr/lib/jvm/default-java
+if [ -d /usr/lib/jvm/java-6-sun ];then
+    JAVA_HOME=/usr/lib/jvm/java-6-sun
+elif [ -d /usr/lib/jvm/j2sdk1.6-oracle ];then
+    JAVA_HOME=/usr/lib/jvm/j2sdk1.6-oracle
+elif [ -d /usr/lib/jvm/default-java ];then
+    JAVA_HOME=/usr/lib/jvm/default-java
+fi
+#set JAVA_OPTS 
+JAVA_OPTS="
+-server -Xms1024m -Xmx1024m -XX:MaxPermSize=512m \
+-verbose:gc -XX:+PrintGCDetails \
+-Djava.io.tmpdir=$TMP_DIR \
+-Dcom.sun.management.jmxremote \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.netease.appname=cloud-nbs-vm \
+"
+
+export LANG=zh_CN.GBK

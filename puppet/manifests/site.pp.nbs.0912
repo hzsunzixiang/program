@@ -1,0 +1,83 @@
+
+$projectName="cloud-nbs-vm"
+$execFile="com.netease.ebs.vmnode.server.VMNode"
+# 主控节点首先编译工程
+node '10-160-162-45.novalocal' {
+
+#  编译maven工程
+    #exec { "/usr/bin/mvn package -Dmaven.test.skip=true ":
+    #      cwd     => "/etc/puppet/modules/nbs/files/nbs1.0/VolumeManager",
+    #      path    => ["/usr/bin", "/bin"],
+    #      #path    => ["/usr/local/sbin","/usr/sbin","/usr/bin","/sbin","/bin"],
+    #      #path    => ["/usr/local/sbin","/usr/local/bin","/usr/sbin","/usr/bin","/sbin","/bin"],
+    #      environment => "JAVA_HOME=/usr/lib/jvm/j2sdk1.6-oracle"
+    #}
+
+    file { '/home/nbs/java-cloud-nbs-vm':
+      ensure                  => directory,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      source                  => "puppet:///modules/nbs/scripts/java-app",
+      #ignore                  => "/etc/puppet/modules/nbs/files/scripts/java-app/javaApp.erb", 
+      ignore                  => "javaApp.erb"; 
+
+      '/home/nbs/java-cloud-nbs-vm/javaApp':
+      ensure                  => file,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      #content                  => template("/etc/puppet/modules/nbs/files/scripts/java-app/javaApp.erb"),
+      #content                  => template("puppet:///modules/nbs/javaApp.erb"),
+      content                 => template("nbs/java/javaApp.erb");
+
+
+    }
+    notify { "Hello World":
+        name => "This will not be shown or logged.",
+        message => "Hello, World! 你好 45.novalocal"
+    }
+}
+
+
+
+node default {
+    file { '/home/nbs/java-cloud-nbs-vm':
+      ensure                  => directory,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      source                  => "puppet:///modules/nbs/scripts/java-app",
+      #ignore                  => "/etc/puppet/modules/nbs/files/scripts/java-app/javaApp.erb", 
+      ignore                  => "javaApp.erb"; 
+
+      '/home/nbs/java-cloud-nbs-vm/javaApp':
+      ensure                  => file,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      #content                  => template("/etc/puppet/modules/nbs/files/scripts/java-app/javaApp.erb"),
+      #content                  => template("puppet:///modules/nbs/javaApp.erb"),
+      content                 => template("nbs/java/javaApp.erb");
+
+
+    }
+    notify { "Hello World":
+        name => "This will not be shown or logged.",
+        message => "Hello, World! 你好,default"
+    }
+}
+
+
+
+
+#
+#    exec { "ls  >/tmp/ls.txt":
+#          cwd     => "/var/p",
+#          creates => "/var/tmp/myfile",
+#          path    => ["/usr/bin", "/bin",  "/usr/sbin"]
+#    }

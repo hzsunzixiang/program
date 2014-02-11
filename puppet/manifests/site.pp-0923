@@ -1,0 +1,21 @@
+
+
+# 根据各个节点书写对应的模块
+node default {
+    import  "nodes/nbs_node/nbs_qa.pp"
+}
+#node "10-160-162-45.novalocal" {
+#    import  "nodes/nbs_node/nbs_qa_compile.pp"
+#}
+
+
+#node "10-160-162-45.novalocal" {
+#$operatingsystem1=redhat
+#$var_x="here,,,,,,,,,,,,,,,,,,,,,,"
+#
+#notify { "Hello World":
+#  name => "This will not be shown or logged.",
+#  message => "Hello, World! 你好, $servername ,$clientcert , $var_x, $::operatingsystem,$operatingsystem,$operatingsystem1,$::operatingsystem1"
+#}
+#
+#}

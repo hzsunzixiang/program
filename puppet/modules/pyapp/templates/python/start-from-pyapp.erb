@@ -1,0 +1,81 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          nbs-proxyagent
+# Required-Start:    $remote_fs $syslog $network
+# Required-Stop:     $remote_fs $syslog $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Netease Block Service Proxy Agent
+### END INIT INFO
+
+set -e
+
+BASEPATH=/home/nbs/pyapp-cloud-nbs-pa
+#DAEMON=${BASEPATH}/lib/ProxyServiceManager.py
+DAEMON=${BASEPATH}/bin/pyApp
+DAEMON_OPTS=""
+NAME="proxyagent"
+PIDFILE=${BASEPATH}/bin/${NAME}.pid
+DESC="Netease Block Service Proxy Agent"
+USER="nbs"
+
+test -f $DAEMON || exit 0
+test -x $DAEMON || chmod +x $DAEMON
+
+if [ `id -u` -ne 0 ]; then
+    echo "Must be run as root."
+    exit 1
+fi 
+
+. /lib/lsb/init-functions
+
+#reload_nbs_proxyagent() {
+#    start-stop-daemon --stop --quiet --signal HUP --pidfile ${PIDFILE}
+#}
+
+start_nbs_proxyagent() {
+    #start-stop-daemon --start --quiet --pidfile ${PIDFILE} \
+    #    --startas $DAEMON -- $NAME $DAEMON_OPTS
+    sudo -u "$USER" "$DAEMON" start
+}
+
+stop_nbs_proxyagent() {
+    #start-stop-daemon --stop --quiet --oknodo --pidfile ${PIDFILE}
+    sudo -u "$USER" "$DAEMON" stop
+}
+
+status_nbs_proxyagent() {
+    status_of_proc -p "${PIDFILE}" "${DAEMON}" "${NAME}"
+}
+
+case "$1" in
+    start)
+        log_begin_msg "Starting $DESC"
+        start_nbs_proxyagent
+        log_end_msg $?
+        ;;
+    stop)
+        log_begin_msg "Stop $DESC"
+        stop_nbs_proxyagent
+        log_end_msg $?
+        ;;
+    #reload)
+    #    log_begin_msg "Reloading $DESC"
+    #    reload_nbs_proxyagent
+    #    log_end_msg $?
+    #    ;;
+    status)
+        status_nbs_proxyagent
+        ;;
+    restart|force-reload)
+        log_begin_msg "Restarting $DESC"
+        stop_nbs_proxyagent
+        sleep 1
+        start_nbs_proxyagent
+        log_end_msg $?
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|status|restart|force-reload}" >&2
+        exit 1
+esac

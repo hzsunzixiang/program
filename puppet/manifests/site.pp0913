@@ -1,0 +1,121 @@
+
+$projectName="cloud-nbs-vm"
+$execFile="com.netease.ebs.vmnode.server.VMNode"
+# 主控节点首先编译工程
+node '10-160-162-45.novalocal' {
+
+#  编译maven工程
+    #exec { "/usr/bin/mvn package -Dmaven.test.skip=true ":
+    #      cwd     => "/etc/puppet/modules/nbs/files/nbs1.0/VolumeManager",
+    #      path    => ["/usr/bin", "/bin"],
+    #      #path    => ["/usr/local/sbin","/usr/sbin","/usr/bin","/sbin","/bin"],
+    #      #path    => ["/usr/local/sbin","/usr/local/bin","/usr/sbin","/usr/bin","/sbin","/bin"],
+    #      environment => "JAVA_HOME=/usr/lib/jvm/j2sdk1.6-oracle"
+    #}
+
+    file { '/home/nbs/java-cloud-nbs-vm':
+      ensure                  => directory,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      source                  => "puppet:///modules/nbs/scripts/java-app";
+
+      '/home/nbs/java-cloud-nbs-vm/javaApp':
+      ensure                  => file,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      content                 => template("nbs/java/javaApp.erb");
+
+
+    }
+    notify { "Hello World":
+        name => "This will not be shown or logged.",
+        message => "Hello, World! 你好 45.novalocal"
+    }
+}
+
+
+
+node default {
+    # 部署文件 java-cloud-nbs-vm
+    file { '/home/nbs/java-cloud-nbs-vm':
+      ensure                  => directory,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      source                  => "puppet:///modules/nbs/scripts/java-app";
+
+      '/home/nbs/java-cloud-nbs-vm/javaApp':
+      ensure                  => file,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      content                 => template("nbs/java/javaApp.erb");
+    }
+
+#    file {  '/home/nbs/javaapp-cloud-nbs-vm':
+#      ensure                  => directory,
+#      group                   => nbs ,
+#      mode                    => 0755 ,
+#      owner                   => "nbs",
+#      recurse                 => true,
+#      #source                  => "/etc/puppet/modules/nbs/files/nbs1.0/VolumeManager/target/VolumeManager-1.1.1-distribution.zip",
+#      source                  => "/etc/puppet/modules/nbs/files/nbs1.0/VolumeManager/target/",
+#    }
+#
+    file { '/home/nbs/javaapp-cloud-nbs-vm':
+      ensure                  => directory,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+    }
+
+    file { '/home/nbs/javaapp-cloud-nbs-vm/VolumeManager-1.1.1-distribution.zip':
+      ensure                  => directory,
+      group                   => nbs ,
+      mode                    => 0644 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      source                  => "puppet:///modules/nbs/nbs1.0/VolumeManager/target/VolumeManager-1.1.1-distribution.zip";
+    }
+
+# 保证unzip包存在
+    package {
+       "unzip":
+       ensure => installed;
+     }
+
+# 解压
+    exec { "unzip VolumeManager-1.1.1-distribution.zip":
+          cwd     => "/home/nbs/java-cloud-nbs-vm/",
+          path    => ["/usr/local/sbin","/usr/local/bin","/usr/sbin","/usr/bin","/sbin","/bin"],
+    }
+
+
+# 保证java包存在
+    package {
+       "oracle-j2sdk1.6":
+       ensure => installed;
+     }
+
+
+    notify { "Hello World":
+        name => "This will not be shown or logged.",
+        message => "Hello, World! 你好,default"
+    }
+}
+
+
+
+
+#
+#    exec { "ls  >/tmp/ls.txt":
+#          cwd     => "/var/p",
+#          creates => "/var/tmp/myfile",
+#          path    => ["/usr/bin", "/bin",  "/usr/sbin"]
+#    }

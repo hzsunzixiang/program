@@ -1,0 +1,156 @@
+
+
+
+
+$user="nbs"
+$group="nbs"
+$project="nbs"
+$app_name="cloud-nbs-vm"
+$service="volumeManager"
+$package_prefix="volumeManager" # 打包的前缀名 VolumeManager-1.1.1-distribution.zip
+$version=1.1.1
+
+$exec_file="com.netease.ebs.vmnode.server.VMNode"
+$environ="qa"
+
+
+$nbsPackageName=$packagePrefix-$version-distribution.zip
+
+$nbsSource="nbs1.0/VolumeManager/target/VolumeManager-1.1.1-distribution.zip"
+
+
+
+
+
+# 主控节点首先编译工程
+
+node '10-160-162-45.novalocal' {
+
+#  编译maven工程
+    #exec { "/usr/bin/mvn package -Dmaven.test.skip=true ":
+    #      cwd     => "/etc/puppet/modules/nbs/files/nbs1.0/VolumeManager",
+    #      path    => ["/usr/bin", "/bin"],
+    #      #path    => ["/usr/local/sbin","/usr/sbin","/usr/bin","/sbin","/bin"],
+    #      #path    => ["/usr/local/sbin","/usr/local/bin","/usr/sbin","/usr/bin","/sbin","/bin"],
+    #      environment => "JAVA_HOME=/usr/lib/jvm/j2sdk1.6-oracle"
+    #}
+
+    file { '/home/$user/java-$appName':
+      ensure                  => directory,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      source                  => "puppet:///modules/nbs/scripts/java-app";
+
+      '/home/$user/java-$appName/javaApp':
+      ensure                  => file,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      content                 => template("nbs/java/javaApp.erb");
+
+
+    }
+    notify { "Hello World":
+        name => "This will not be shown or logged.",
+        message => "Hello, World! 你好 45.novalocal"
+    }
+}
+
+
+
+node default {
+    # 部署文件 java-cloud-nbs-vm
+    file { '/home/$user/java-$appName':
+      ensure                  => directory,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      source                  => "puppet:///modules/nbs/scripts/java-app";
+
+      '/home/$user/java-$appName/javaApp':
+      ensure                  => file,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      content                 => template("nbs/java/javaApp.erb");
+
+
+      '/etc/init.d/$project-$service-$environ':
+      ensure                  => file,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      content                 => template("nbs/java/javaApp.erb");
+    }
+
+#    file {  '/home/$user/javaapp-cloud-nbs-vm':
+#      ensure                  => directory,
+#      group                   => nbs ,
+#      mode                    => 0755 ,
+#      owner                   => "nbs",
+#      recurse                 => true,
+#      #source                  => "/etc/puppet/modules/nbs/files/nbs1.0/VolumeManager/target/VolumeManager-1.1.1-distribution.zip",
+#      source                  => "/etc/puppet/modules/nbs/files/nbs1.0/VolumeManager/target/",
+#    }
+#
+    file { '/home/$user/javaapp-$appName':
+      ensure                  => directory,
+      group                   => nbs ,
+      mode                    => 0755 ,
+      owner                   => "nbs",
+    }
+
+    file { '/home/$user/javaapp-$appName/$packagePrefix-$version-distribution.zip':
+      ensure                  => directory,
+      group                   => nbs ,
+      mode                    => 0644 ,
+      owner                   => "nbs",
+      recurse                 => true,
+      source                  => "puppet:///modules/nbs/$nbsSource";
+    }
+
+
+# 解压
+    exec { "unzip-and-clean":
+          command => "unzip -o VolumeManager-1.1.1-distribution.zip&&cp -rf  VolumeManager-1.1.1/* .&&rm -rf VolumeManager-1.1.1 *.zip",
+          cwd     => "/home/$user/javaapp-cloud-nbs-vm",
+          user    => "nbs",
+          path    => ["/usr/local/sbin","/usr/local/bin","/usr/sbin","/usr/bin","/sbin","/bin"],
+          require => File['/home/$user/javaapp-cloud-nbs-vm/VolumeManager-1.1.1-distribution.zip']
+    }
+
+# 覆盖配置文件
+
+# 保证java包存在
+    package {
+       [ "unzip", "oracle-j2sdk1.6", "daemon"]:
+       ensure => installed;
+     }
+#  启动
+    service { 'nbs-volumeManager-qa':
+      ensure     => running ,
+      enable     => true , # Whether a service should be enabled to start at...
+      #path       => # The search path for finding init scripts....
+    }
+
+    notify { "Hello World":
+        name => "This will not be shown or logged.",
+        message => "Hello, World! 你好,default"
+    }
+}
+
+
+
+
+#
+#    exec { "ls  >/tmp/ls.txt":
+#          cwd     => "/var/p",
+#          creates => "/var/tmp/myfile",
+#          path    => ["/usr/bin", "/bin",  "/usr/sbin"]
+#    }

@@ -1,0 +1,71 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          <%= @project_name %>
+# Required-Start:    $remote_fs $syslog $network
+# Required-Stop:     $remote_fs $syslog $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Netease Block Service <%= @service_name %>
+### END INIT INFO
+
+set -e
+
+#BASEPATH=/home/nbs/pyapp-cloud-nbs-ha
+BASEPATH=/home/<%= @process_user %>/<%= @package_link_name %>
+#DAEMON=${BASEPATH}/lib/HostAgent.py
+DAEMON=${BASEPATH}/lib/<%= @start_file %>
+DAEMON_OPTS="-l debug -d"
+#NAME="hostagent"
+NAME="<%= @process_file %>"
+PIDFILE=${BASEPATH}/bin/${NAME}
+DESC="Netease Block Service <%= @service_name %>"
+
+test -x $DAEMON || exit 0
+
+if [ `id -u` -ne 0 ]; then
+    echo "Must be run as root."
+    exit 1
+fi 
+
+. /lib/lsb/init-functions
+
+
+start_service() {
+    start-stop-daemon --start --quiet --pidfile ${PIDFILE} \
+        --startas $DAEMON -- $NAME $DAEMON_OPTS
+}
+
+stop_service() {
+    start-stop-daemon --stop --quiet --oknodo --pidfile ${PIDFILE}
+}
+
+status_service() {
+    status_of_proc -p "${PIDFILE}" "${DAEMON}" "${NAME}"
+}
+
+case "$1" in
+    start)
+        log_begin_msg "Starting $DESC"
+        start_service
+        log_end_msg $?
+        ;;
+    stop)
+        log_begin_msg "Stop $DESC"
+        stop_service
+        log_end_msg $?
+        ;;
+    status)
+        status_service
+        ;;
+    restart|force-reload)
+        log_begin_msg "Restarting $DESC"
+        stop_service
+        sleep 1
+        start_service
+        log_end_msg $?
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|status|restart|force-reload}" >&2
+        exit 1
+esac

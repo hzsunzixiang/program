@@ -1,0 +1,68 @@
+# /etc/puppet/manifests/modules.pp
+
+#import "sudo"
+
+#vim modules.pp #加载cron模块
+#import "test" 
+#import "sudo" 
+#import cron 
+
+#include cron
+#import "test:notify" 
+#import  "notify1.pp"
+#import  "/etc/puppet/modules/test/notify.pp"
+#import  "/etc/puppet/modules/notify.pp"
+#import  "test/notify.pp"
+
+
+
+#
+#node default {
+#    include test::test
+#}
+
+#node "10-160-161-22.novalocal" {
+#    include test::test
+#}
+
+
+#node "10-160-161-22.novalocal" {
+#exec { "add_ssh":
+#    command => "/bin/ls",
+#    provider => shell,
+#    path =>"/"
+#}
+#}
+
+#node default {
+#file { "/tmp/temp1.txt" :
+#content => "hello,world." ; }
+#}
+
+
+#node default {
+#  package {
+#	  "build-essential":
+#	  ensure => installed;
+#	}
+#}
+#
+#node default {
+#  package {
+#	  "netcat":
+#	  ensure => installed;
+#	}
+#}
+
+
+
+#node default {
+#  package {
+#	  "gcc":
+#	  ensure => installed;
+#	}
+#}
+
+#import 'nodes/*'
+#include ntp
+class {'ntp':}

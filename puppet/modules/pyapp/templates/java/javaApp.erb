@@ -1,0 +1,137 @@
+#!/bin/bash
+#
+#javaApp -- startup script for the Java App.
+#author tonghan,2012-9-7.
+#update 2012.9.12 
+#modified by sunzixiang
+
+
+HOME=/home/<%= @process_user %>
+APP_NAME=<%= @app_name_suffix %>
+APP_HOME=$HOME/javaapp-$APP_NAME
+JAVA_BASE=$HOME/java-$APP_NAME
+
+RunServer="<%= @exec_file%>"
+
+APP_CONF=$JAVA_BASE/default
+LIB_PATH=$APP_HOME/lib
+appLog=$JAVA_BASE/app.log
+stdErrLog=$JAVA_BASE/logs/stderr.log
+PID_PATH=$JAVA_BASE/pid
+PID=$PID_PATH/javaApp.pid
+
+DAEMON=/usr/bin/daemon
+JAVA_HOME=/usr/lib/jvm/java-6-sun
+
+if [ ! -f $DAEMON ];then
+    echo "daemon not exist, please check !"
+    exit 1
+fi
+
+if [ ! -d $APP_HOME ];then
+    echo "APP_HOME not exist, please check !"
+    exit 1
+fi
+
+if [ ! -d $JAVA_BASE ];then
+    echo "JAVA_BASE not exist, please check !"
+    exit 1
+fi
+
+if [ ! -d $PID_PATH ];then
+    echo "pid path not found !"
+    exit 1
+fi
+
+if [ -z "$JAVA_OPTS" ]; then
+    JAVA_OPTS="-Xms512m -Xmx512m -verbose:gc -XX:+PrintGCDetails"
+fi
+
+if [ -z "$RunServer" ]; then
+    echo "RunServer not exist, please check !"
+    exit 1
+fi
+
+# overwrite settings from default config file
+if [ -f "$APP_CONF" ]; then
+    . "$APP_CONF"
+fi
+
+if [ ! -d "$JAVA_HOME" ]; then
+    echo "JAVA_HOME not found, please set !"
+    exit 1
+fi
+
+CLASSPATH=conf:`for i in $LIB_PATH/*.jar ; do echo -n :$i ; done`
+export CLASSPATH
+CMDS="$JAVA_HOME/jre/bin/java $JAVA_OPTS $RunServer"
+DAEMON_OPTS="--name=$APP_NAME --chdir=$APP_HOME --user=<%= @process_user %>:<%= @process_group %>  --respawn --stderr=$stdErrLog --pidfile=$PID"
+
+start () {
+    $DAEMON $DAEMON_OPTS -- $CMDS
+};
+
+stop () {
+    $DAEMON $DAEMON_OPTS --stop -- $CMDS
+};
+
+status(){
+    $DAEMON $DAEMON_OPTS --running -- $CMDS
+}
+
+case "$1" in
+    start)
+	status;
+        if [ $? != 0 ]; then
+            echo -n 'Starting app server: ';
+            start;
+            if [ $? = 0 ];then
+                echo 'done.'
+            else
+                echo 'failed.'
+                exit 1
+            fi
+        else
+            echo "alreadly running."
+        fi
+        ;;
+    stop)
+	status;
+        if [ $? != 0 ]; then
+	    echo "not running."
+        else
+            echo -n 'Stopping app server: ';
+            stop;
+            S=0
+            while [[ $S = 0 ]];
+            do 
+                status;
+                if [ $? = 0 ];then
+                    sleep 1;
+                    echo -n "."
+                else
+                    echo "done."
+                    S=1
+                fi
+            done
+        fi
+        ;;
+    restart)
+	$0 stop
+        sleep 1;
+        $0 start
+        ;;
+    status)
+        status;
+	if [ $? = 0 ];then
+            echo 'running.'
+        else
+            echo 'not running.'
+            exit 1
+        fi
+        ;;
+    *)
+        echo "Usage $0 start|stop|restart|status"
+        exit 1;
+        ;;
+esac;
