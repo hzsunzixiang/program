@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/10/trunk/src/Tests
+END
+ThreadPoolXmlRpcServer.py
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/10/trunk/src/Tests/ThreadPoolXmlRpcServer.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/6/trunk/src/Tests/__init__.py
+END
+XmlRpcTest.py
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/10/trunk/src/Tests/XmlRpcTest.py
+END
+TestTiming.py
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/7/trunk/src/Tests/TestTiming.py
+END
+ThreadingXmlRpcServer.py
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/10/trunk/src/Tests/ThreadingXmlRpcServer.py
+END
